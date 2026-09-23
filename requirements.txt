@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn>=0.29
+litellm>=1.40
+python-dotenv>=1.0
+pydantic>=2.6
+pytest>=8.0
+httpx>=0.27
+numpy>=1.26

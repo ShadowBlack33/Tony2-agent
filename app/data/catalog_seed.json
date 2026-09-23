@@ -1,0 +1,93 @@
+{
+  "_nota": "CATALOGO DE PRUEBA. Todo producto con placeholder=true tiene datos inventados o estimados y DEBE reemplazarse con el catalogo real de Tony2 antes de produccion.",
+  "hormas": {
+    "horma_cuero": {
+      "placeholder": true,
+      "tallas": {"36": 23.7, "37": 24.4, "38": 25.0, "39": 25.7, "40": 26.4, "41": 27.0, "42": 27.7, "43": 28.4, "44": 29.0, "45": 29.7}
+    },
+    "horma_t2": {
+      "placeholder": true,
+      "tallas": {"37": 24.3, "38": 24.9, "39": 25.6, "40": 26.3, "41": 26.9, "42": 27.6, "43": 28.3, "44": 28.9}
+    },
+    "horma_escolar": {
+      "placeholder": true,
+      "tallas": {"28": 18.3, "29": 19.0, "30": 19.7, "31": 20.3, "32": 21.0, "33": 21.7, "34": 22.3, "35": 23.0}
+    }
+  },
+  "productos": [
+    {"id": "AUR", "nombre": "Aureon", "linea": "Aureon", "categoria": "guayo", "segmento": "adulto", "material": "cuero",
+     "concepto": "comodidad y control, referencia Copa", "horma": "horma_cuero", "origen": "fabricado en Cali", "placeholder": true,
+     "descripcion": "Guayo en cuero bovino hidrofugado, corte clasico, comodo y resistente. Color vinotinto con isotipo T2 blanco.",
+     "variantes": [
+       {"sku": "AUR-VIN-FG", "color": "vinotinto", "suela": "FG", "precio": 199500, "tallas_stock": {"38": 4, "39": 6, "40": 8, "41": 8, "42": 6, "43": 3, "44": 0}}
+     ]},
+    {"id": "T2S", "nombre": "T2 Speed", "linea": "T2", "categoria": "guayo", "segmento": "adulto", "material": "sintetico knit",
+     "concepto": "velocidad, delantero o extremo, con cordones", "horma": "horma_t2", "origen": "importado", "placeholder": true,
+     "descripcion": "Guayo sintetico tejido (knit), ligero, corte bajo, pensado para velocidad. Version con cordones del Vertex.",
+     "variantes": [
+       {"sku": "T2S-VER-FG", "color": "blanco/verde", "suela": "FG", "precio": 183500, "tallas_stock": {"38": 5, "39": 7, "40": 9, "41": 9, "42": 7, "43": 4}},
+       {"sku": "T2S-VER-TF", "color": "blanco/verde", "suela": "TF", "precio": 183500, "tallas_stock": {"38": 3, "39": 6, "40": 8, "41": 8, "42": 0, "43": 2}}
+     ]},
+    {"id": "T2V", "nombre": "T2 Vertex", "linea": "T2", "categoria": "guayo", "segmento": "adulto", "material": "sintetico knit",
+     "concepto": "velocidad premium, sin cordones", "horma": "horma_t2", "origen": "importado", "placeholder": true,
+     "descripcion": "Guayo sintetico tejido tipo calcetin, sin cordones, la pieza premium de la linea de velocidad.",
+     "variantes": [
+       {"sku": "T2V-ROJ-FG", "color": "blanco/rojo", "suela": "FG", "precio": 251500, "tallas_stock": {"39": 3, "40": 5, "41": 5, "42": 4, "43": 2}}
+     ]},
+    {"id": "T2N", "nombre": "T2 Nexus", "linea": "T2", "categoria": "guayo", "segmento": "adulto", "material": "sintetico knit",
+     "concepto": "control de balon, mediocampo, corte medio", "horma": "horma_t2", "origen": "importado", "placeholder": true,
+     "descripcion": "Guayo sintetico tejido de corte medio con zona de agarre texturizada para control y pase.",
+     "variantes": [
+       {"sku": "T2N-MOR-FG", "color": "morado/negro", "suela": "FG", "precio": 191500, "tallas_stock": {"38": 4, "39": 6, "40": 7, "41": 7, "42": 5, "43": 3}},
+       {"sku": "T2N-MOR-TF", "color": "morado/negro", "suela": "TF", "precio": 191500, "tallas_stock": {"39": 4, "40": 6, "41": 6, "42": 4}}
+     ]},
+    {"id": "SCO", "nombre": "Scorer", "linea": "Cuero tradicional", "categoria": "guayo", "segmento": "adulto", "material": "cuero",
+     "concepto": "definicion, delantero", "horma": "horma_cuero", "origen": "fabricado en Cali", "placeholder": true,
+     "descripcion": "Linea tradicional en cuero de Tony2 para jugadores de ataque.",
+     "variantes": [
+       {"sku": "SCO-NEG-FG", "color": "negro", "suela": "FG", "precio": 159000, "tallas_stock": {"38": 5, "39": 8, "40": 10, "41": 10, "42": 8, "43": 5, "44": 2}}
+     ]},
+    {"id": "CAN", "nombre": "Cantera Escolar", "linea": "Escolar", "categoria": "guayo", "segmento": "nino", "material": "cuero",
+     "concepto": "escolar, formativo", "horma": "horma_escolar", "origen": "fabricado en Cali", "placeholder": true,
+     "descripcion": "Guayo en cuero para ninos y escuelas de futbol.",
+     "variantes": [
+       {"sku": "CAN-NEG-FG", "color": "negro", "suela": "FG", "precio": 119000, "tallas_stock": {"28": 4, "29": 5, "30": 6, "31": 6, "32": 5, "33": 4, "34": 3, "35": 2}}
+     ]},
+    {"id": "FSA", "nombre": "Nitro Sala", "linea": "Futbol Sala", "categoria": "guayo", "segmento": "adulto", "material": "cuero",
+     "concepto": "futsal, microfutbol", "horma": "horma_cuero", "origen": "fabricado en Cali", "placeholder": true,
+     "descripcion": "Zapatilla de futbol sala con suela lisa de goma no marcante.",
+     "variantes": [
+       {"sku": "FSA-BLA-IC", "color": "blanco", "suela": "IC", "precio": 139000, "tallas_stock": {"38": 4, "39": 6, "40": 7, "41": 7, "42": 5, "43": 3}}
+     ]},
+    {"id": "GCG", "nombre": "Guantes Control Grip", "linea": "Accesorios", "categoria": "guante", "segmento": "adulto", "material": "latex",
+     "concepto": "portero, agarre", "horma": null, "origen": "importado", "placeholder": true,
+     "descripcion": "Guantes de portero con palma de latex para agarre.",
+     "variantes": [
+       {"sku": "GCG-NEG-UNI", "color": "negro/verde", "suela": "NA", "precio": 69000, "tallas_stock": {"7": 3, "8": 5, "9": 5, "10": 3}}
+     ]},
+    {"id": "GAS", "nombre": "Guantes Anti Shock System", "linea": "Accesorios", "categoria": "guante", "segmento": "adulto", "material": "latex",
+     "concepto": "portero, proteccion de dedos", "horma": null, "origen": "importado", "placeholder": true,
+     "descripcion": "Guantes de portero con proteccion anti impacto.",
+     "variantes": [
+       {"sku": "GAS-AZU-UNI", "color": "azul", "suela": "NA", "precio": 89000, "tallas_stock": {"8": 2, "9": 4, "10": 2}}
+     ]},
+    {"id": "BAL", "nombre": "Balon Tony2 N5", "linea": "Accesorios", "categoria": "balon", "segmento": "adulto", "material": "sintetico",
+     "concepto": "entrenamiento y partido", "horma": null, "origen": "importado", "placeholder": true,
+     "descripcion": "Balon numero 5 para cancha natural y sintetica.",
+     "variantes": [
+       {"sku": "BAL-BLA-N5", "color": "blanco", "suela": "NA", "precio": 59000, "tallas_stock": {"5": 12}}
+     ]},
+    {"id": "MED", "nombre": "Medias antideslizantes", "linea": "Accesorios", "categoria": "media", "segmento": "adulto", "material": "algodon/silicona",
+     "concepto": "agarre dentro del guayo", "horma": null, "origen": "importado", "placeholder": true,
+     "descripcion": "Medias con puntos de silicona para evitar que el pie se deslice.",
+     "variantes": [
+       {"sku": "MED-NEG-UNI", "color": "negro", "suela": "NA", "precio": 25000, "tallas_stock": {"unica": 30}}
+     ]},
+    {"id": "CNL", "nombre": "Canilleras", "linea": "Accesorios", "categoria": "canillera", "segmento": "adulto", "material": "polipropileno",
+     "concepto": "proteccion", "horma": null, "origen": "importado", "placeholder": true,
+     "descripcion": "Canilleras livianas con funda.",
+     "variantes": [
+       {"sku": "CNL-NEG-M", "color": "negro", "suela": "NA", "precio": 35000, "tallas_stock": {"S": 5, "M": 8, "L": 5}}
+     ]}
+  ]
+}
