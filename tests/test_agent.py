@@ -70,3 +70,11 @@ def test_all_models_down_returns_safe_message_and_handoff(tmp_path):
                         store_path=str(tmp_path / "g.sqlite"), use_env_embedder=False)
     r, hist = agent.run_turn("s6", [], "hola")
     assert r.handoff and "problemas tecnicos" in r.reply and len(r.errors) == 2 and len(hist) == 2
+
+
+def test_store_can_be_closed(tmp_path):
+    agent = build_agent(llm=FlakyLLM(set()), fast_model="fake/fast", smart_model="fake/smart",
+                        store_path=str(tmp_path / "h.sqlite"), use_env_embedder=False)
+    agent.run_turn("s7", [], "hola")
+    agent.tools.store.close()
+    (tmp_path / "h.sqlite").unlink()  # en Windows fallaria si la conexion siguiera abierta

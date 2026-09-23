@@ -115,7 +115,7 @@ class Agent:
             try:
                 return self.llm.complete(candidate, messages, TOOL_SCHEMAS)
             except Exception as e:  # 503, 429, timeout, red, etc.
-                msg = f"{candidate}: {type(e).__name__}"
+                msg = f"{candidate}: {type(e).__name__}: {str(e)[:200]}"
                 log.warning("Fallo LLM %s", msg)
                 result.errors.append(msg)
         return None

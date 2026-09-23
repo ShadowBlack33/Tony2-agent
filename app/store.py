@@ -26,6 +26,10 @@ class Store:
             filtros TEXT, motivo TEXT, ts TEXT);
         """)
 
+    def close(self) -> None:
+        with self._lock:
+            self.conn.close()
+
     @staticmethod
     def _now() -> str:
         return datetime.now(timezone.utc).isoformat()
