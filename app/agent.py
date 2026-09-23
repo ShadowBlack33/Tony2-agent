@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import time
 from dataclasses import dataclass, field
 from typing import Any
@@ -10,6 +11,10 @@ from app.guardrails import validate_reply
 from app.llm import LLMClient, choose_model
 from app.tools import TOOL_SCHEMAS, ToolExecutor
 
+log = logging.getLogger(__name__)
+
+UNAVAILABLE = ("Uy, en este momento tengo problemas tecnicos para responderte. "
+               "Ya le avise a una persona del equipo y te escribe por aqui en breve.")
 FALLBACK = ("Quiero darte la informacion exacta, asi que te paso con una persona del equipo. "
             "En un momento te responden por aqui.")
 CORRECTION = ("Tu respuesta anterior incluyo datos no verificados ({v}). Reescribela usando SOLO precios, "
@@ -27,6 +32,7 @@ class TurnResult:
     llm_calls: int = 0
     guardrail_violations: list[str] = field(default_factory=list)
     handoff: bool = False
+    errors: list[str] = field(default_factory=list)   # fallas del proveedor LLM en este turno
 
 
 class Agent:
@@ -45,7 +51,13 @@ class Agent:
         corrected = False
 
         for _ in range(self.max_steps):
-            resp = self.llm.complete(model, messages, TOOL_SCHEMAS)
+            resp = self._complete_resilient(model, messages, result)
+            if resp is None:
+                # Ningun modelo respondio: mensaje seguro + persona del equipo, sin tumbar el servicio
+                result.reply = UNAVAILABLE
+                self._handoff(session_id, f"Proveedor LLM no disponible. Ultimo mensaje: {user_text[:200]}",
+                              "no_resuelto", "alta", result)
+                break
             result.models.append(resp.model)
             result.cost_usd += resp.cost_usd
             result.latency_ms += resp.latency_ms
@@ -96,9 +108,23 @@ class Agent:
                        {"role": "assistant", "content": result.reply}]
         return result, new_history
 
-    def _fallback(self, session_id: str, user_text: str, result: TurnResult) -> str:
-        self.tools.run(session_id, "handoff_to_human",
-                       {"resumen": f"Fallback automatico. Ultimo mensaje: {user_text[:200]}",
-                        "motivo": "no_resuelto", "prioridad": "media"})
+    def _complete_resilient(self, model: str, messages: list[dict], result: TurnResult):
+        """Intenta el modelo pedido; si falla (tras los reintentos del cliente), prueba el otro modelo."""
+        alternate = self.smart_model if model == self.fast_model else self.fast_model
+        for candidate in dict.fromkeys([model, alternate]):
+            try:
+                return self.llm.complete(candidate, messages, TOOL_SCHEMAS)
+            except Exception as e:  # 503, 429, timeout, red, etc.
+                msg = f"{candidate}: {type(e).__name__}"
+                log.warning("Fallo LLM %s", msg)
+                result.errors.append(msg)
+        return None
+
+    def _handoff(self, session_id: str, resumen: str, motivo: str, prioridad: str, result: TurnResult) -> None:
+        self.tools.run(session_id, "handoff_to_human", {"resumen": resumen, "motivo": motivo, "prioridad": prioridad})
         result.handoff = True
+
+    def _fallback(self, session_id: str, user_text: str, result: TurnResult) -> str:
+        self._handoff(session_id, f"Fallback automatico. Ultimo mensaje: {user_text[:200]}",
+                      "no_resuelto", "media", result)
         return FALLBACK

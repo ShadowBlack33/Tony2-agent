@@ -16,6 +16,8 @@ def main():
         if not text:
             continue
         result, history = agent.run_turn(sid, history, text)
+        if result.errors:
+            print(f"   [fallas del proveedor: {'; '.join(result.errors)}]")
         tools = ", ".join(t["name"] for t in result.tool_calls) or "-"
         print(f"\nTony2: {result.reply}\n   [herramientas: {tools} | modelo: {result.models[-1] if result.models else '-'}"
             f" | costo: ${result.cost_usd:.5f} | LLM {result.latency_ms} ms en {result.llm_calls} llamadas"

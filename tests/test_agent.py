@@ -41,3 +41,32 @@ def test_size_recommendation_tool(tmp_path):
     r, _ = agent.run_turn("s4", [], "mi pie mide 26 cm, que talla del speed?")
     out = agent.tools.recommend_size("s4", "T2S-VER-FG", 26)
     assert out["ok"] and out["talla"] == "41" and r.reply.endswith("41.")
+
+
+class FlakyLLM:
+    """Falla con el modelo indicado y responde con el otro."""
+    def __init__(self, broken: set[str], reply: str = "Hola, en que te ayudo?"):
+        self.broken, self.reply, self.used = broken, reply, []
+
+    def complete(self, model, messages, tools):
+        self.used.append(model)
+        if model in self.broken:
+            raise ConnectionError("503 Service Unavailable")
+        return LLMResponse(content=self.reply, model=model)
+
+
+def test_falls_back_to_other_model_when_one_is_down(tmp_path):
+    llm = FlakyLLM(broken={"fake/fast"})
+    agent = build_agent(llm=llm, fast_model="fake/fast", smart_model="fake/smart",
+                        store_path=str(tmp_path / "f.sqlite"), use_env_embedder=False)
+    r, _ = agent.run_turn("s5", [], "hola")
+    assert r.reply == "Hola, en que te ayudo?" and llm.used == ["fake/fast", "fake/smart"]
+    assert r.errors and not r.handoff
+
+
+def test_all_models_down_returns_safe_message_and_handoff(tmp_path):
+    llm = FlakyLLM(broken={"fake/fast", "fake/smart"})
+    agent = build_agent(llm=llm, fast_model="fake/fast", smart_model="fake/smart",
+                        store_path=str(tmp_path / "g.sqlite"), use_env_embedder=False)
+    r, hist = agent.run_turn("s6", [], "hola")
+    assert r.handoff and "problemas tecnicos" in r.reply and len(r.errors) == 2 and len(hist) == 2

@@ -35,14 +35,19 @@ class LLMClient(Protocol):
 
 
 class LiteLLMClient:
-    def __init__(self, temperature: float | None = None, max_tokens: int = 800, reasoning_effort: str | None = "low"):
+    def __init__(self, temperature: float | None = None, max_tokens: int = 800, reasoning_effort: str | None = "low",
+                 timeout_s: float = 30.0, num_retries: int = 2):
         import litellm  # import diferido: los tests no lo necesitan
         litellm.drop_params = True  # si un proveedor no soporta un parametro, se omite en vez de fallar
+        litellm.suppress_debug_info = True  # sin el banner "Give Feedback" en cada error
         self._litellm = litellm
         self.temperature, self.max_tokens, self.reasoning_effort = temperature, max_tokens, reasoning_effort
+        self.timeout_s, self.num_retries = timeout_s, num_retries
 
     def complete(self, model: str, messages: list[dict], tools: list[dict]) -> LLMResponse:
-        kwargs: dict[str, Any] = {"max_tokens": self.max_tokens}
+        # num_retries: reintentos con espera creciente ante 429/503/timeouts del proveedor
+        kwargs: dict[str, Any] = {"max_tokens": self.max_tokens, "timeout": self.timeout_s,
+                                  "num_retries": self.num_retries}
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
         if self.reasoning_effort:
