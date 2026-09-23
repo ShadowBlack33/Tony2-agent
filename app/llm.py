@@ -49,11 +49,6 @@ class LiteLLMClient:
             kwargs["reasoning_effort"] = self.reasoning_effort
         t0 = time.perf_counter()
         resp = self._litellm.completion(model=model, messages=messages, tools=tools, **kwargs)
-
-    def complete(self, model: str, messages: list[dict], tools: list[dict]) -> LLMResponse:
-        t0 = time.perf_counter()
-        resp = self._litellm.completion(model=model, messages=messages, tools=tools,
-                                        temperature=self.temperature, max_tokens=self.max_tokens)
         latency = int((time.perf_counter() - t0) * 1000)
         msg = resp.choices[0].message
         calls = []

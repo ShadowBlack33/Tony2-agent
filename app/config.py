@@ -22,7 +22,7 @@ class Settings:
     store_path: str = os.getenv("STORE_PATH", "./tony2_store.sqlite")
     # Vacio = busqueda solo lexica. Ej: gemini/gemini-embedding-001
     embedding_model: str = os.getenv("EMBEDDING_MODEL", "")
-    search_min_similarity: float = float(os.getenv("SEARCH_MIN_SIMILARITY", "0.5"))
+    search_min_similarity: float = float(os.getenv("SEARCH_MIN_SIMILARITY", "0.61"))
     embedding_cache_path: Path = Path(os.getenv("EMBEDDING_CACHE_PATH", "./embeddings_cache.json"))
     catalog_path: Path = DATA_DIR / "catalog_seed.json"
     policies_dir: Path = DATA_DIR / "policies"
